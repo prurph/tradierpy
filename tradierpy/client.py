@@ -15,6 +15,7 @@ from pydantic import (
 )
 
 from tradierpy.account import GetPositionsResponse
+from tradierpy.option_symbols import GetOptionSymbolsResponse
 from tradierpy.order import (
     CancelOrderRequest,
     ModifyOrderRequest,
@@ -102,6 +103,9 @@ class TradierClient:
         self.try_parse_positions_response = TradierClient.validate_json_response(
             GetPositionsResponse
         )
+        self.try_parse_option_symbols_response = TradierClient.validate_json_response(
+            GetOptionSymbolsResponse
+        )
         self.try_parse_orders_response = TradierClient.validate_json_response(
             GetOrdersResponse
         )
@@ -136,6 +140,16 @@ class TradierClient:
             )
 
             return self.try_parse_quotes_response(res)
+
+    async def get_option_symbols(self, underlying: str) -> GetOptionSymbolsResponse:
+        async with AsyncClient() as client:
+            res = await client.get(
+                f"{self.base_url}/markets/options/lookup",
+                headers=self.__headers,
+                params={"underlying": underlying},
+            )
+
+            return self.try_parse_option_symbols_response(res)
 
     async def get_orders(self, since: Optional[datetime] = None) -> GetOrdersResponse:
         # "Hidden" filtered api: https://documentation.tradier.com/brokerage-api/accounts/get-account-orders-filtered
