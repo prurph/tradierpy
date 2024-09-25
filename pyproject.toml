@@ -1,0 +1,66 @@
+[project]
+name = "tradierpy"
+version = "0.1.0"
+description = "Limited Python wrapper around the Tradier brokerage API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.27.2",
+    "pydantic>=2.9.2",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "ruff>=0.6.7",
+]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 88
+indent-width = 4
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+# Ignore magic trailing comma to allow coalescing back to one line when it fits
+skip-magic-trailing-comma = true
+line-ending = "auto"
+
+[tool.ruff.per-file-ignores]
+# Ignore specific rules for specific files
+# "tests/*": ["S101"]
+
+[tool.ruff.flake8-quotes]
+docstring-quotes = "double"
