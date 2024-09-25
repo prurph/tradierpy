@@ -84,7 +84,7 @@ class OrderAlreadyFinalized(BaseModel):
 JsonErrorResponse = Union[DownstreamErrorResponse, ClientErrorResponse]
 
 
-class ClientTradier:
+class TradierClient:
     def __init__(self, account_id=None, access_token=None):
         self.account_id = account_id or os.getenv("TRADIER_ACCOUNT_ID")
         self.__access_token = access_token or os.getenv("TRADIER_ACCESS_TOKEN")
@@ -99,22 +99,22 @@ class ClientTradier:
             "Authorization": f"Bearer {self.__access_token}",
         }
         self.base_url = "https://api.tradier.com/v1"
-        self.try_parse_positions_response = ClientTradier.validate_json_response(
+        self.try_parse_positions_response = TradierClient.validate_json_response(
             GetPositionsResponse
         )
-        self.try_parse_orders_response = ClientTradier.validate_json_response(
+        self.try_parse_orders_response = TradierClient.validate_json_response(
             GetOrdersResponse
         )
-        self.try_parse_quotes_response = ClientTradier.validate_json_response(
+        self.try_parse_quotes_response = TradierClient.validate_json_response(
             GetQuotesResponse
         )
-        self.try_parse_place_order_response = ClientTradier.validate_json_response(
+        self.try_parse_place_order_response = TradierClient.validate_json_response(
             PlaceOrderResponse
         )
-        self.try_parse_modify_order_response = ClientTradier.validate_json_response(
+        self.try_parse_modify_order_response = TradierClient.validate_json_response(
             ModifyOrderResponse
         )
-        self.try_parse_cancel_order_response = ClientTradier.validate_json_response(
+        self.try_parse_cancel_order_response = TradierClient.validate_json_response(
             CancelOrderResponse
         )
 
@@ -238,7 +238,7 @@ class ClientTradier:
 
             except JSONDecodeError as e:
                 raise ValueError(f"failed to decode response as json {res}") from e
-            except ValidationError as e:
+            except ValidationError:
                 raise ValueError(f"failed to validate json as {ta._type} {res.json()}")
 
         return f
