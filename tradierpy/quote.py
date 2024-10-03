@@ -45,6 +45,11 @@ class StockQuote(BaseQuote):
     root_symbols: Optional[str]
 
 
+class ETFQuote(BaseQuote):
+    type: Literal["etf"]
+    root_symbols: Optional[str]
+
+
 class Greeks(BaseModel):
     delta: float
     gamma: float
@@ -71,7 +76,7 @@ class OptionQuote(BaseQuote):
 
 
 Quote = Annotated[
-    Union[IndexQuote, StockQuote, OptionQuote],
+    Union[IndexQuote, StockQuote, ETFQuote, OptionQuote],
     Field(..., discriminator="type"),
 ]
 
